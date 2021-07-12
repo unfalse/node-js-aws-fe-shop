@@ -104,15 +104,33 @@
               "PolicyDocument": {
                 "Statement": [
                   {
-                    "Sid": "PublicReadGetObject",
+                    "Sid": "AllowCloudFrontAccessIdentity",
                     "Effect": "Allow",
-                    "Principal": "*",
-                    "Action": [
-                      "s3:GetObject"
-                    ],
-                    "Resource": "arn:aws:s3:::learn-nodejs-on-aws-fe-second/*"
+                    "Action": "s3:GetObject",
+                    "Resource": "arn:aws:s3:::learn-nodejs-on-aws-fe-second/*",
+                    "Principal": {
+                      "AWS": {
+                        "Fn::Join": [
+                          " ",
+                          [
+                            "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity",
+                            {
+                              "Ref": "OriginAccessIdentity"
+                            }
+                          ]
+                        ]
+                      }
+                    }
                   }
                 ]
+              }
+            }
+          },
+          "OriginAccessIdentity": {
+            "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+            "Properties": {
+              "CloudFrontOriginAccessIdentityConfig": {
+                "Comment": "Access identity between CloudFront and S3 bucket"
               }
             }
           },
@@ -123,15 +141,17 @@
                 "Origins": [
                   {
                     "DomainName": "learn-nodejs-on-aws-fe-second.s3.amazonaws.com",
-                    "Id": "WebApp",
-                    "CustomOriginConfig": {
-                      "HTTPPort": 80,
-                      "HTTPSPort": 443,
-                      "OriginProtocolPolicy": "https-only"
+                    "Id": "myS3Origin",
+                    "S3OriginConfig": {
+                      "OriginAccessIdentity": {
+                        "Fn::Sub": "origin-access-identity/cloudfront/${OriginAccessIdentity}"
+                      }
                     }
                   }
                 ],
-                "Enabled": "true",
+                "Enabled": true,
+                "IPV6Enabled": true,
+                "HttpVersion": "http2",
                 "DefaultRootObject": "index.html",
                 "CustomErrorResponses": [
                   {
@@ -142,22 +162,31 @@
                 ],
                 "DefaultCacheBehavior": {
                   "AllowedMethods": [
-                    "DELETE",
                     "GET",
                     "HEAD",
-                    "OPTIONS",
-                    "PATCH",
-                    "POST",
-                    "PUT"
+                    "OPTIONS"
                   ],
-                  "TargetOriginId": "WebApp",
+                  "CachedMethods": [
+                    "GET",
+                    "HEAD",
+                    "OPTIONS"
+                  ],
                   "ForwardedValues": {
-                    "QueryString": "false",
+                    "Headers": [
+                      "Access-Control-Request-Headers",
+                      "Access-Control-Request-Method",
+                      "Origin",
+                      "Authorization"
+                    ],
+                    "QueryString": false,
                     "Cookies": {
                       "Forward": "none"
                     }
                   },
-                  "ViewerProtocolPolicy": "redirect-to-https"
+                  "TargetOriginId": "myS3Origin",
+                  "ViewerProtocolPolicy": "redirect-to-https",
+                  "Compress": true,
+                  "DefaultTTL": 0
                 },
                 "ViewerCertificate": {
                   "CloudFrontDefaultCertificate": "true"
@@ -304,15 +333,33 @@
             "PolicyDocument": {
               "Statement": [
                 {
-                  "Sid": "PublicReadGetObject",
+                  "Sid": "AllowCloudFrontAccessIdentity",
                   "Effect": "Allow",
-                  "Principal": "*",
-                  "Action": [
-                    "s3:GetObject"
-                  ],
-                  "Resource": "arn:aws:s3:::learn-nodejs-on-aws-fe-second/*"
+                  "Action": "s3:GetObject",
+                  "Resource": "arn:aws:s3:::learn-nodejs-on-aws-fe-second/*",
+                  "Principal": {
+                    "AWS": {
+                      "Fn::Join": [
+                        " ",
+                        [
+                          "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity",
+                          {
+                            "Ref": "OriginAccessIdentity"
+                          }
+                        ]
+                      ]
+                    }
+                  }
                 }
               ]
+            }
+          }
+        },
+        "OriginAccessIdentity": {
+          "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+          "Properties": {
+            "CloudFrontOriginAccessIdentityConfig": {
+              "Comment": "Access identity between CloudFront and S3 bucket"
             }
           }
         },
@@ -323,15 +370,17 @@
               "Origins": [
                 {
                   "DomainName": "learn-nodejs-on-aws-fe-second.s3.amazonaws.com",
-                  "Id": "WebApp",
-                  "CustomOriginConfig": {
-                    "HTTPPort": 80,
-                    "HTTPSPort": 443,
-                    "OriginProtocolPolicy": "https-only"
+                  "Id": "myS3Origin",
+                  "S3OriginConfig": {
+                    "OriginAccessIdentity": {
+                      "Fn::Sub": "origin-access-identity/cloudfront/${OriginAccessIdentity}"
+                    }
                   }
                 }
               ],
-              "Enabled": "true",
+              "Enabled": true,
+              "IPV6Enabled": true,
+              "HttpVersion": "http2",
               "DefaultRootObject": "index.html",
               "CustomErrorResponses": [
                 {
@@ -342,22 +391,31 @@
               ],
               "DefaultCacheBehavior": {
                 "AllowedMethods": [
-                  "DELETE",
                   "GET",
                   "HEAD",
-                  "OPTIONS",
-                  "PATCH",
-                  "POST",
-                  "PUT"
+                  "OPTIONS"
                 ],
-                "TargetOriginId": "WebApp",
+                "CachedMethods": [
+                  "GET",
+                  "HEAD",
+                  "OPTIONS"
+                ],
                 "ForwardedValues": {
-                  "QueryString": "false",
+                  "Headers": [
+                    "Access-Control-Request-Headers",
+                    "Access-Control-Request-Method",
+                    "Origin",
+                    "Authorization"
+                  ],
+                  "QueryString": false,
                   "Cookies": {
                     "Forward": "none"
                   }
                 },
-                "ViewerProtocolPolicy": "redirect-to-https"
+                "TargetOriginId": "myS3Origin",
+                "ViewerProtocolPolicy": "redirect-to-https",
+                "Compress": true,
+                "DefaultTTL": 0
               },
               "ViewerCertificate": {
                 "CloudFrontDefaultCertificate": "true"
@@ -402,7 +460,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/my-first-rs-app/dev/1626083495451-2021-07-12T09:51:35.451Z",
+    "artifactDirectoryName": "serverless/my-first-rs-app/dev/1626086765538-2021-07-12T10:46:05.538Z",
     "artifact": ""
   }
 }

@@ -1,3 +1,10 @@
+# Shop app written on React for NodeJS in AWS Cloud course
+
+CloudFront URL: [https://d31o7gs7tvejdc.cloudfront.net/](https://d31o7gs7tvejdc.cloudfront.net/)
+S3-website: [http://learn-nodejs-on-aws-fe-second.s3-website-us-east-1.amazonaws.com/](http://learn-nodejs-on-aws-fe-second.s3-website-us-east-1.amazonaws.com/)
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
