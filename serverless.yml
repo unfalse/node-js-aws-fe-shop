@@ -25,6 +25,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
+  region: eu-west-1
 
 plugins:
   - serverless-finch
@@ -157,7 +158,7 @@ resources:
       Properties:
         DistributionConfig:
           Origins:
-            - DomainName: ${self:custom.s3BucketName}.s3.amazonaws.com
+            - DomainName: !GetAtt WebAppS3Bucket.RegionalDomainName
               ## An identifier for the origin which must be unique within the distribution
               Id: myS3Origin
               ## In case you don't want to restrict the bucket access use CustomOriginConfig and remove S3OriginConfig
@@ -210,6 +211,7 @@ resources:
 
   ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
   Outputs:
+    WebAppS3BucketOutput:
+      Value: !Ref WebAppS3Bucket
     WebAppCloudFrontDistributionOutput:
-      Value:
-        'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+      Value: !GetAtt WebAppCloudFrontDistribution.DomainName

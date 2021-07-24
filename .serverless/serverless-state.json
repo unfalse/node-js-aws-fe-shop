@@ -8,8 +8,8 @@
       "name": "aws",
       "runtime": "nodejs12.x",
       "lambdaHashingVersion": "20201221",
+      "region": "eu-west-1",
       "stage": "dev",
-      "region": "us-east-1",
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
@@ -140,7 +140,12 @@
               "DistributionConfig": {
                 "Origins": [
                   {
-                    "DomainName": "learn-nodejs-on-aws-fe-second.s3.amazonaws.com",
+                    "DomainName": {
+                      "Fn::GetAtt": [
+                        "WebAppS3Bucket",
+                        "RegionalDomainName"
+                      ]
+                    },
                     "Id": "myS3Origin",
                     "S3OriginConfig": {
                       "OriginAccessIdentity": {
@@ -202,6 +207,11 @@
             },
             "Export": {
               "Name": "sls-my-first-rs-app-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "WebAppS3BucketOutput": {
+            "Value": {
+              "Ref": "WebAppS3Bucket"
             }
           },
           "WebAppCloudFrontDistributionOutput": {
@@ -369,7 +379,12 @@
             "DistributionConfig": {
               "Origins": [
                 {
-                  "DomainName": "learn-nodejs-on-aws-fe-second.s3.amazonaws.com",
+                  "DomainName": {
+                    "Fn::GetAtt": [
+                      "WebAppS3Bucket",
+                      "RegionalDomainName"
+                    ]
+                  },
                   "Id": "myS3Origin",
                   "S3OriginConfig": {
                     "OriginAccessIdentity": {
@@ -425,6 +440,11 @@
         }
       },
       "Outputs": {
+        "WebAppS3BucketOutput": {
+          "Value": {
+            "Ref": "WebAppS3Bucket"
+          }
+        },
         "WebAppCloudFrontDistributionOutput": {
           "Value": {
             "Fn::GetAtt": [
@@ -460,7 +480,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/my-first-rs-app/dev/1626086765538-2021-07-12T10:46:05.538Z",
+    "artifactDirectoryName": "serverless/my-first-rs-app/dev/1627113170323-2021-07-24T07:52:50.323Z",
     "artifact": ""
   }
 }
