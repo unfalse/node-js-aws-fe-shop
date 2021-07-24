@@ -127,7 +127,12 @@
         "DistributionConfig": {
           "Origins": [
             {
-              "DomainName": "learn-nodejs-on-aws-fe-second.s3.amazonaws.com",
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "WebAppS3Bucket",
+                  "RegionalDomainName"
+                ]
+              },
               "Id": "myS3Origin",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
@@ -189,6 +194,11 @@
       },
       "Export": {
         "Name": "sls-my-first-rs-app-dev-ServerlessDeploymentBucketName"
+      }
+    },
+    "WebAppS3BucketOutput": {
+      "Value": {
+        "Ref": "WebAppS3Bucket"
       }
     },
     "WebAppCloudFrontDistributionOutput": {

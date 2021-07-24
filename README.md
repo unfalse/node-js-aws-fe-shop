@@ -1,7 +1,8 @@
 # Shop app written on React for NodeJS in AWS Cloud course
 
-CloudFront URL: [https://d31o7gs7tvejdc.cloudfront.net/](https://d31o7gs7tvejdc.cloudfront.net/)
-S3-website: [http://learn-nodejs-on-aws-fe-second.s3-website-us-east-1.amazonaws.com/](http://learn-nodejs-on-aws-fe-second.s3-website-us-east-1.amazonaws.com/)
+CloudFront URL: [https://d2p1ss31jpj477.cloudfront.net/](https://d2p1ss31jpj477.cloudfront.net/)
+
+S3-website: [http://learn-nodejs-on-aws-fe-second.s3-website-eu-west-1.amazonaws.com/](http://learn-nodejs-on-aws-fe-second.s3-website-eu-west-1.amazonaws.com/)
 
 ---
 
