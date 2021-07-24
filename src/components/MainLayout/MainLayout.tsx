@@ -10,7 +10,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © fadeoutrun // v2'}
       <Link color="inherit" href="https://material-ui.com/">
-        My Store
+        Kettles Market
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
