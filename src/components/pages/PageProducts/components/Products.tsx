@@ -7,6 +7,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
+import queryString from 'query-string';
+import { useLocation } from 'react-router';
 
 import {Product} from "models/Product";
 import {formatAsPrice} from "utils/utils";
@@ -34,11 +36,21 @@ const useStyles = makeStyles((theme) => ({
 export default function Products() {
   const classes = useStyles();
   const [products, setProducts] = useState<Product[]>([]);
+  const location = useLocation();
+  const {id_token=''} = queryString.parse(location.hash);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${API_PATHS.bff}/products`);
+        const res = await axios.get(
+          `${API_PATHS.bff}/products`,
+          {
+            headers: 
+              id_token
+                ? { Authorization: id_token }
+                : {}
+          }
+        );
         setProducts(res.data)
       } catch (error) {
         console.log(error);
